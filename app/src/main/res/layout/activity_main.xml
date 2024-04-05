@@ -47,6 +47,14 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/username"
+        android:layout_width="224dp"
+        android:layout_height="26dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="All items"
@@ -76,7 +84,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="" />
     </RelativeLayout>
 
     <TextView

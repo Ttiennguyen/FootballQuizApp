@@ -3,6 +3,7 @@ package com.example.quizonline
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,6 +11,7 @@ import com.example.quizonline.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
@@ -28,10 +30,37 @@ class MainActivity : AppCompatActivity() {
         getDataFromFirebase()
 
         auth = Firebase.auth
+
+        displayUsername()
+
         binding.signout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(this, SignInActivity::class.java))
             finish()
+        }
+    }
+
+    private fun displayUsername(){
+        val currentUser = auth.currentUser
+        val userId = currentUser?.uid
+        if (userId != null) {
+            val db = FirebaseFirestore.getInstance()
+            val userRef = db.collection("users").document(userId)
+            userRef.get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        val userName = document.getString("name")
+                        if (userName != null) {
+                            // Hiển thị tên của người dùng trong giao diện
+                            binding.username.text = "Hello, $userName!"
+                        }
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    // Xử lý nếu có lỗi xảy ra khi đọc dữ liệu từ Firestore
+                    // Ví dụ: Hiển thị thông báo lỗi
+                    Toast.makeText(this, "Failed to retrieve user data: ${exception.message}", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
