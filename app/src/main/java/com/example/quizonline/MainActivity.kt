@@ -33,6 +33,28 @@ class MainActivity : AppCompatActivity() {
 
         displayUsername()
 
+        binding.bottomNavigation.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.home -> {
+                    // Xử lý khi chọn mục "Home"
+                    // Ví dụ: Chuyển sang màn hình MainActivity
+//                    val intent = Intent(this, MainActivity::class.java)
+//                    startActivity(intent)
+                    true
+                }
+                R.id.profile -> {
+                    // Xử lý khi chọn mục "Profile"
+                    // Ví dụ: Chuyển sang màn hình ProfileActivity
+                    val intent = Intent(this, ProfileActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                // Thêm các trường hợp khác tương ứng với các mục trên BottomNavigationView nếu cần
+                else -> false
+            }
+        }
+
+
         binding.signout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(this, SignInActivity::class.java))
